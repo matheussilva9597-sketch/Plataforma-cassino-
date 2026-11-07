@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casanova VIP - Cassino Moderno</title>
+  <title>Casanova VIP - Cassino Oficial 2026</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <script>
@@ -12,7 +12,7 @@
       theme: {
         extend: {
           colors: {
-            casino: { dark: '#0a0e17', card: '#131b2e', hover: '#1c2842', purple: '#7c3aed', gold: '#fbbf24', emerald: '#10b981' }
+            casino: { dark: '#080c14', card: '#101726', hover: '#182237', purple: '#7c3aed', gold: '#fbbf24', emerald: '#10b981' }
           }
         }
       }
@@ -22,33 +22,32 @@
 <body class="bg-casino-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-casino-purple selection:text-white">
 
   <!-- TOPO / HEADER -->
-  <header class="bg-casino-card/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3 flex justify-between items-center sticky top-0 z-50">
+  <header class="bg-casino-card/95 backdrop-blur-md border-b border-slate-800/80 px-4 py-3 flex justify-between items-center sticky top-0 z-50">
     <div class="flex items-center space-x-3">
-      <!-- Botão para abrir/fechar o menu no celular -->
-      <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-2 text-xl focus:outline-none">
+      <button onclick="toggleSidebar()" id="menu-toggle-btn" class="hidden text-slate-400 hover:text-white p-2 text-xl focus:outline-none">
         <i class="fa-solid fa-bars"></i>
       </button>
       <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-dice-d20 text-casino-gold text-3xl"></i>
+        <i class="fa-solid fa-dice-d20 text-casino-gold text-3xl animate-pulse"></i>
         <span class="text-xl md:text-2xl font-black tracking-wider bg-gradient-to-r from-purple-400 via-pink-500 to-amber-400 bg-clip-text text-transparent">CASANOVA</span>
       </div>
     </div>
     
-    <!-- Status do Usuário / Saldo -->
-    <div class="flex items-center space-x-3">
+    <!-- Ações do Topo (Exibidas apenas após login) -->
+    <div id="nav-actions" class="hidden items-center space-x-3">
       <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center space-x-2">
         <span class="text-[10px] text-slate-400 uppercase font-bold">R$</span>
-        <span id="user-balance" class="font-bold text-casino-gold text-xs md:text-sm">100.00</span>
+        <span id="user-balance" class="font-bold text-casino-gold text-xs md:text-sm">0.00</span>
       </div>
       <button onclick="openDepositModal()" class="px-3 py-1.5 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition">+ Depositar</button>
-      <button onclick="switchView('admin')" class="px-2.5 py-1.5 bg-red-900/40 text-red-400 border border-red-700/50 rounded-xl text-xs font-bold">Admin</button>
+      <button onclick="logout()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">Sair</button>
     </div>
   </header>
 
   <div class="flex flex-grow relative">
     
     <!-- BARRA LATERAL (SIDEBAR) -->
-    <aside id="sidebar" class="w-64 bg-casino-card border-r border-slate-800/80 p-4 absolute md:relative z-40 h-[calc(100vh-65px)] transition-all duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
+    <aside id="sidebar" class="w-64 bg-casino-card border-r border-slate-800/80 p-4 absolute md:relative z-40 h-[calc(100vh-65px)] transition-all duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none hidden">
       <div class="space-y-6">
         <div>
           <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 mb-3 px-2">Menu Principal</p>
@@ -74,82 +73,183 @@
             <button onclick="openDepositModal()" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
               <i class="fa-solid fa-wallet text-casino-emerald"></i><span>Depósito PIX</span>
             </button>
-            <button onclick="alert('Módulo de saque em desenvolvimento!');" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
-              <i class="fa-solid fa-money-bill-transfer text-blue-400"></i><span>Saque</span>
+            <button onclick="openWithdrawModal()" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
+              <i class="fa-solid fa-money-bill-transfer text-blue-400"></i><span>Saque PIX</span>
+            </button>
+            <button id="admin-menu-btn" onclick="switchView('admin')" class="hidden w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-950/40 text-sm transition border border-red-900/30">
+              <i class="fa-solid fa-shield-halved text-red-500"></i><span>Painel Admin</span>
             </button>
           </nav>
         </div>
       </div>
     </aside>
 
-    <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-grow p-4 md:p-6 space-y-8 overflow-x-hidden">
 
-      <!-- LOBBY DE JOGOS (DASHBOARD) -->
-      <div id="view-dashboard" class="space-y-8">
+      <!-- 1. TELA DE AUTENTICAÇÃO (LOGIN / CADASTRO) -->
+      <div id="view-auth" class="max-w-md mx-auto bg-casino-card p-8 rounded-3xl border border-slate-800 shadow-2xl mt-10">
+        <div class="text-center mb-6">
+          <i class="fa-solid fa-dice-d20 text-casino-gold text-4xl mb-2"></i>
+          <h2 id="auth-title" class="text-2xl font-black text-white">Aceder à Plataforma</h2>
+          <p class="text-xs text-slate-400 mt-1">Entre na sua conta para jogar e lucrar.</p>
+        </div>
+        <form onsubmit="handleAuth(event)" class="space-y-4">
+          <div>
+            <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">E-mail</label>
+            <input type="email" id="auth-email" required placeholder="seu@email.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:border-casino-purple focus:outline-none text-white text-sm">
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">Palavra-passe</label>
+            <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:border-casino-purple focus:outline-none text-white text-sm">
+          </div>
+          <button type="submit" id="auth-btn" class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 font-bold rounded-xl shadow-lg shadow-purple-600/30 hover:opacity-95 transition text-sm">Entrar na Conta</button>
+        </form>
+        <div class="mt-6 text-center">
+          <button onclick="toggleMode()" class="text-xs text-casino-purple font-bold hover:underline" id="toggle-mode-text">Não tem conta? Cadastre-se</button>
+        </div>
+        <div class="mt-4 pt-4 border-t border-slate-800 text-center">
+          <p class="text-[10px] text-slate-500">Dica Admin: use <span class="text-amber-400 font-bold">admin@casanova.com</span> para aceder à Gestão.</p>
+        </div>
+      </div>
+
+      <!-- 2. LOBBY PRINCIPAL DE JOGOS (DASHBOARD) -->
+      <div id="view-dashboard" class="hidden space-y-8">
         
-        <!-- BANNER DE DESTAQUE -->
-        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-900/60 via-slate-900 to-slate-950 border border-purple-500/30 p-6 md:p-8 shadow-2xl">
+        <!-- CARROSSEL / BANNER DE BOAS-VINDAS -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900/60 via-slate-900 to-slate-950 border border-purple-500/30 p-6 md:p-8 shadow-2xl">
           <div class="relative z-10 max-w-lg space-y-3">
             <span class="inline-block bg-casino-gold/20 text-casino-gold text-[10px] font-black px-3 py-1 rounded-full border border-casino-gold/30 uppercase tracking-widest">Bônus Exclusivo 2026</span>
             <h1 class="text-2xl md:text-4xl font-black text-white leading-tight">Receba até <span class="text-casino-gold">R$ 1.000 + 50 GIROS</span></h1>
-            <button onclick="openDepositModal()" class="px-5 py-2.5 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl shadow-lg text-sm transition">
+            <p class="text-slate-300 text-xs md:text-sm">Faça o seu primeiro depósito PIX instantâneo e dobre o seu saldo.</p>
+            <button onclick="openDepositModal()" class="px-5 py-2.5 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl shadow-lg shadow-emerald-500/20 text-sm transition transform hover:scale-105">
               <i class="fa-solid fa-bolt mr-2"></i>Depositar via PIX
             </button>
           </div>
+          <i class="fa-solid fa-trophy absolute right-4 -bottom-6 text-9xl text-purple-500/10 pointer-events-none"></i>
         </section>
 
-        <!-- FILTROS DE CATEGORIA -->
+        <!-- FILTROS DE CATEGORIAS -->
         <section class="flex space-x-2 overflow-x-auto pb-2 scrollbar-none">
-          <button onclick="filterGames('all')" class="px-4 py-2 bg-casino-purple text-white font-bold rounded-xl text-xs shrink-0">Todos os Jogos</button>
-          <button onclick="filterGames('crash')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0">Crash</button>
-          <button onclick="filterGames('slots')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0">Slots</button>
-          <button onclick="filterGames('live')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0">Cassino ao Vivo</button>
+          <button onclick="filterGames('all')" class="px-4 py-2 bg-casino-purple text-white font-bold rounded-xl text-xs shrink-0 flex items-center space-x-2">
+            <i class="fa-solid fa-fire"></i><span>Todos os Jogos</span>
+          </button>
+          <button onclick="filterGames('crash')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0 flex items-center space-x-2">
+            <i class="fa-solid fa-plane-up text-red-400"></i><span>Crash Games</span>
+          </button>
+          <button onclick="filterGames('slots')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0 flex items-center space-x-2">
+            <i class="fa-solid fa-bolt text-amber-400"></i><span>Slots (Caça-Níqueis)</span>
+          </button>
+          <button onclick="filterGames('live')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0 flex items-center space-x-2">
+            <i class="fa-solid fa-dharmachakra text-emerald-400"></i><span>Roleta & Mesas</span>
+          </button>
         </section>
 
         <!-- GRADE DE JOGOS -->
-        <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div class="game-card crash bg-casino-card border border-slate-800 rounded-2xl p-3 flex flex-col justify-between">
-            <div class="h-32 bg-red-950/40 rounded-xl flex items-center justify-center mb-2">
-              <i class="fa-solid fa-plane-up text-3xl text-red-500"></i>
-            </div>
-            <h3 class="font-bold text-xs text-white">Aviator Crash</h3>
-            <button onclick="playGame('Aviator', 10)" class="w-full mt-2 py-1.5 bg-casino-gold text-slate-950 font-black rounded-lg text-xs">Jogar (R$ 10)</button>
+        <section>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-black text-white flex items-center"><i class="fa-solid fa-star text-casino-gold mr-2"></i>Jogos em Alta</h2>
+            <span class="text-xs text-slate-500">Provedores Certificados</span>
           </div>
 
-          <div class="game-card slots bg-casino-card border border-slate-800 rounded-2xl p-3 flex flex-col justify-between">
-            <div class="h-32 bg-amber-950/40 rounded-xl flex items-center justify-center mb-2">
-              <i class="fa-solid fa-coins text-3xl text-amber-400"></i>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            
+            <div class="game-card crash bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
+              <div class="h-32 bg-gradient-to-tr from-red-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
+                <i class="fa-solid fa-plane-up text-3xl text-red-500 group-hover:scale-110 transition"></i>
+                <span class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded">AO VIVO</span>
+              </div>
+              <div class="p-3">
+                <h3 class="font-bold text-xs text-white truncate">Aviator Crash</h3>
+                <p class="text-[10px] text-slate-500 mb-2">Spribe</p>
+                <button onclick="playGame('Aviator', 10)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 10)</button>
+              </div>
             </div>
-            <h3 class="font-bold text-xs text-white">Fortune Tiger</h3>
-            <button onclick="playGame('Fortune Tiger', 5)" class="w-full mt-2 py-1.5 bg-casino-gold text-slate-950 font-black rounded-xl text-xs">Jogar (R$ 5)</button>
-          </div>
 
-          <div class="game-card live bg-casino-card border border-slate-800 rounded-2xl p-3 flex flex-col justify-between">
-            <div class="h-32 bg-emerald-950/40 rounded-xl flex items-center justify-center mb-2">
-              <i class="fa-solid fa-dharmachakra text-3xl text-emerald-400"></i>
+            <div class="game-card slots bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
+              <div class="h-32 bg-gradient-to-tr from-amber-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
+                <i class="fa-solid fa-coins text-3xl text-amber-400 group-hover:scale-110 transition"></i>
+                <span class="absolute top-2 right-2 bg-amber-500 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded">HOT</span>
+              </div>
+              <div class="p-3">
+                <h3 class="font-bold text-xs text-white truncate">Fortune Tiger</h3>
+                <p class="text-[10px] text-slate-500 mb-2">PG Soft</p>
+                <button onclick="playGame('Fortune Tiger', 5)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 5)</button>
+              </div>
             </div>
-            <h3 class="font-bold text-xs text-white">Roleta Brasileira</h3>
-            <button onclick="playGame('Roleta', 10)" class="w-full mt-2 py-1.5 bg-casino-gold text-slate-950 font-black rounded-lg text-xs">Jogar (R$ 10)</button>
+
+            <div class="game-card live bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
+              <div class="h-32 bg-gradient-to-tr from-emerald-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
+                <i class="fa-solid fa-dharmachakra text-3xl text-emerald-400 group-hover:scale-110 transition"></i>
+              </div>
+              <div class="p-3">
+                <h3 class="font-bold text-xs text-white truncate">Roleta Brasileira</h3>
+                <p class="text-[10px] text-slate-500 mb-2">Evolution</p>
+                <button onclick="playGame('Roleta Brasileira', 10)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 10)</button>
+              </div>
+            </div>
+
+            <div class="game-card crash bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
+              <div class="h-32 bg-gradient-to-tr from-blue-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
+                <i class="fa-solid fa-bomb text-3xl text-blue-400 group-hover:scale-110 transition"></i>
+              </div>
+              <div class="p-3">
+                <h3 class="font-bold text-xs text-white truncate">Mines Field</h3>
+                <p class="text-[10px] text-slate-500 mb-2">Spribe</p>
+                <button onclick="playGame('Mines Field', 5)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 5)</button>
+              </div>
+            </div>
+
+            <div class="game-card slots bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
+              <div class="h-32 bg-gradient-to-tr from-purple-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
+                <i class="fa-solid fa-gem text-3xl text-purple-400 group-hover:scale-110 transition"></i>
+              </div>
+              <div class="p-3">
+                <h3 class="font-bold text-xs text-white truncate">Fortune Ox</h3>
+                <p class="text-[10px] text-slate-500 mb-2">PG Soft</p>
+                <button onclick="playGame('Fortune Ox', 5)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 5)</button>
+              </div>
+            </div>
+
+            <div class="game-card live bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
+              <div class="h-32 bg-gradient-to-tr from-rose-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
+                <i class="fa-solid fa-spade text-3xl text-rose-400 group-hover:scale-110 transition"></i>
+              </div>
+              <div class="p-3">
+                <h3 class="font-bold text-xs text-white truncate">Blackjack VIP</h3>
+                <p class="text-[10px] text-slate-500 mb-2">Pragmatic</p>
+                <button onclick="playGame('Blackjack VIP', 20)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 20)</button>
+              </div>
+            </div>
+
           </div>
         </section>
 
       </div>
 
-      <!-- PAINEL ADMINISTRATIVO -->
+      <!-- 3. PAINEL ADMINISTRATIVO -->
       <div id="view-admin" class="hidden space-y-6">
-        <div class="flex justify-between items-center bg-red-950/30 border border-red-500/30 p-6 rounded-2xl">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-red-950/20 border border-red-500/30 p-6 rounded-2xl gap-4">
           <div>
-            <h1 class="text-2xl font-black text-white">Painel Administrativo da Casa</h1>
-            <p class="text-xs text-slate-400">Controle de ganhos da casa e dados gerais.</p>
+            <span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">Painel Restrito</span>
+            <h1 class="text-2xl font-black text-white mt-2">Gestão Geral da Casa</h1>
+            <p class="text-xs text-slate-400">Controle total de lucros (GGR) e utilizadores.</p>
           </div>
-          <button onclick="switchView('dashboard')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold">Voltar ao Cassino</button>
+          <button onclick="switchView('dashboard')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">Voltar ao Cassino</button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
-            <p class="text-slate-400 text-xs font-bold uppercase">Lucro da Casa (GGR)</p>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Lucro Líquido da Casa (GGR)</p>
             <p class="text-3xl font-black text-casino-emerald mt-2">R$ <span id="admin-profit">0.00</span></p>
+          </div>
+          <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Utilizador Ativo</p>
+            <p class="text-lg font-bold text-purple-400 mt-2 truncate" id="admin-active-user">-</p>
+          </div>
+          <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Estado do Servidor</p>
+            <p class="text-3xl font-black text-blue-400 mt-2">Online 🟢</p>
           </div>
         </div>
       </div>
@@ -157,56 +257,35 @@
     </main>
   </div>
 
+  <!-- MODAL DE DEPÓSITO PIX SIMULADO -->
+  <div id="deposit-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-casino-card border border-slate-800 p-6 rounded-3xl max-w-sm w-full space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center">
+        <h3 class="font-black text-lg text-white"><i class="fa-solid fa-qrcode text-casino-emerald mr-2"></i>Depósito PIX Instantâneo</h3>
+        <button onclick="closeDepositModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p class="text-xs text-slate-400">Insira o valor que deseja simular de depósito na sua carteira:</p>
+      <input type="number" id="deposit-amount" value="50" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-bold text-center text-lg focus:outline-none focus:border-casino-emerald">
+      <button onclick="confirmDeposit()" class="w-full py-3 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-sm transition">Gerar QR Code PIX</button>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE CONTROLE -->
   <script>
-    let balance = 100.00;
-    let houseProfit = 0.00;
+    let isRegister = false;
+
+    function init() {
+      if (!localStorage.getItem('balance')) localStorage.setItem('balance', '100.00');
+      if (!localStorage.getItem('house_profit')) localStorage.setItem('house_profit', '0.00');
+      renderApp();
+    }
 
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('-translate-x-full');
     }
 
-    function switchView(view) {
-      document.getElementById('view-dashboard').classList.add('hidden');
-      document.getElementById('view-admin').classList.add('hidden');
-      if (view === 'dashboard') document.getElementById('view-dashboard').classList.remove('hidden');
-      if (view === 'admin') document.getElementById('view-admin').classList.remove('hidden');
-    }
-
-    function filterGames(category) {
-      const cards = document.querySelectorAll('.game-card');
-      cards.forEach(card => {
-        if (category === 'all' || card.classList.contains(category)) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    }
-
-    function openDepositModal() {
-      balance += 50.00;
-      document.getElementById('user-balance').innerText = balance.toFixed(2);
-      alert('Depósito simulado com sucesso (+ R$ 50,00)!');
-    }
-
-    function playGame(gameName, cost) {
-      if (balance < cost) {
-        alert('Saldo insuficiente!');
-        return;
-      }
-      balance -= cost;
-      if (Math.random() > 0.5) {
-        let prize = cost * 2;
-        balance += prize;
-        alert(`Ganhou R$ ${prize.toFixed(2)} no ${gameName}!`);
-      } else {
-        houseProfit += cost;
-        document.getElementById('admin-profit').innerText = houseProfit.toFixed(2);
-        alert(`Perdeu no ${gameName}. Tente novamente!`);
-      }
-      document.getElementById('user-balance').innerText = balance.toFixed(2);
-    }
-  </script>
-</body>
-</html>
+    function toggleMode() {
+      isRegister = !isRegister;
+      document.getElementById('auth-title').innerText = isRegister ? 'Criar Nova Conta' : 'Aceder à Plataforma';
+      document.getElementById('auth-btn').in
