@@ -73,7 +73,6 @@
         </div>
       </div>
 
-      <!-- Footer do Sidebar -->
       <div class="border-t border-slate-800 pt-4">
         <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs text-slate-400">
           <p class="font-bold text-white mb-1">Suporte VIP 24/7</p>
@@ -107,10 +106,9 @@
         </div>
       </div>
 
-      <!-- 2. PAINEL DE JOGOS DO USUÁRIO (LOBBY REFINADO) -->
+      <!-- 2. PAINEL DE JOGOS DO USUÁRIO -->
       <div id="view-dashboard" class="hidden space-y-8">
         
-        <!-- BANNERS EM CARROSSEL DE BOAS-VINDAS -->
         <section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-900/60 via-slate-900 to-slate-950 border border-purple-500/30 p-6 md:p-8 shadow-2xl">
           <div class="relative z-10 max-w-lg space-y-3">
             <span class="inline-block bg-casino-gold/20 text-casino-gold text-[10px] font-black px-3 py-1 rounded-full border border-casino-gold/30 uppercase tracking-widest">Bônus Exclusivo 2026</span>
@@ -123,7 +121,6 @@
           <i class="fa-solid fa-trophy absolute right-4 -bottom-6 text-9xl text-purple-500/10 pointer-events-none"></i>
         </section>
 
-        <!-- CATEGORIAS EM ABAS NA LARGURA TOTAL -->
         <section class="flex space-x-2 overflow-x-auto pb-2 scrollbar-none">
           <button onclick="filterGames('all')" class="game-filter-btn px-4 py-2 bg-casino-purple text-white font-bold rounded-xl text-xs shrink-0 flex items-center space-x-2">
             <i class="fa-solid fa-fire"></i><span>Todos os Jogos</span>
@@ -139,7 +136,6 @@
           </button>
         </section>
 
-        <!-- GRADE DE JOGOS MODERNOS -->
         <section>
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-black text-white flex items-center"><i class="fa-solid fa-star text-casino-gold mr-2"></i>Jogos em Alta</h2>
@@ -148,7 +144,6 @@
 
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" id="games-grid">
             
-            <!-- Card Jogo 1 - Aviator -->
             <div class="game-card crash bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
               <div class="h-36 bg-gradient-to-tr from-red-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3 text-center">
                 <i class="fa-solid fa-plane-up text-4xl text-red-500 group-hover:scale-110 transition duration-300"></i>
@@ -161,7 +156,6 @@
               </div>
             </div>
 
-            <!-- Card Jogo 2 - Fortune Tiger -->
             <div class="game-card slots bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
               <div class="h-36 bg-gradient-to-tr from-amber-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3 text-center">
                 <i class="fa-solid fa-coins text-4xl text-amber-400 group-hover:scale-110 transition duration-300"></i>
@@ -174,7 +168,6 @@
               </div>
             </div>
 
-            <!-- Card Jogo 3 - Roleta VIP -->
             <div class="game-card live bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
               <div class="h-36 bg-gradient-to-tr from-emerald-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3 text-center">
                 <i class="fa-solid fa-dharmachakra text-4xl text-emerald-400 group-hover:scale-110 transition duration-300"></i>
@@ -186,7 +179,6 @@
               </div>
             </div>
 
-            <!-- Card Jogo 4 - Mines -->
             <div class="game-card crash bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
               <div class="h-36 bg-gradient-to-tr from-blue-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3 text-center">
                 <i class="fa-solid fa-bomb text-4xl text-blue-400 group-hover:scale-110 transition duration-300"></i>
@@ -198,7 +190,6 @@
               </div>
             </div>
 
-            <!-- Card Jogo 5 - Fortune Ox -->
             <div class="game-card slots bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
               <div class="h-36 bg-gradient-to-tr from-purple-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3 text-center">
                 <i class="fa-solid fa-gem text-4xl text-purple-400 group-hover:scale-110 transition duration-300"></i>
@@ -210,7 +201,6 @@
               </div>
             </div>
 
-            <!-- Card Jogo 6 - Blackjack -->
             <div class="game-card live bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
               <div class="h-36 bg-gradient-to-tr from-rose-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3 text-center">
                 <i class="fa-solid fa-spade text-4xl text-rose-400 group-hover:scale-110 transition duration-300"></i>
@@ -227,7 +217,7 @@
 
       </div>
 
-      <!-- 3. PAINEL ADMINISTRATIVO (ADMIN PAINEL DA CASA) -->
+      <!-- 3. PAINEL ADMINISTRATIVO -->
       <div id="view-admin" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-red-950/20 border border-red-500/30 p-6 rounded-2xl gap-4">
           <div>
@@ -238,7 +228,6 @@
           <button onclick="switchView('dashboard')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">Voltar ao Cassino</button>
         </div>
 
-        <!-- MÉTIRCAS FINANCEIRAS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
             <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Lucro Líquido da Casa (GGR)</p>
@@ -258,12 +247,10 @@
     </main>
   </div>
 
-  <!-- RODAPÉ -->
   <footer class="bg-casino-card border-t border-slate-800/80 text-center py-4 text-xs text-slate-500">
     <p>© 2026 Casanova VIP. Protótipo de layout responsivo para integração futura no Bolt e Supabase.</p>
   </footer>
 
-  <!-- LÓGICA EM JAVASCRIPT LOCAL -->
   <script>
     let isRegister = false;
 
@@ -327,4 +314,21 @@
 
       b -= cost;
       if (Math.random() > 0.5) {
-        let prize = cost
+        let prize = cost * 2;
+        b += prize;
+        alert(`🎉 Parabéns! Ganhou R$ ${prize.toFixed(2)} no ${gameName}!`);
+      } else {
+        profit += cost;
+        localStorage.setItem('house_profit', profit.toFixed(2));
+        alert(`❌ Não foi desta vez no ${gameName}. Tente novamente!`);
+      }
+
+      localStorage.setItem('balance', b.toFixed(2));
+      renderApp();
+    }
+
+    function filterGames(category) {
+      const cards = document.querySelectorAll('.game-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.clas
