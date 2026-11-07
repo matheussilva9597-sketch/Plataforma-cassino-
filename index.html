@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casanova VIP - Casino & Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { casino: { dark: '#0b0f19', card: '#111827', accent: '#8b5cf6', gold: '#f59e0b' } }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-casino-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- TOPO / HEADER -->
+  <header class="bg-casino-card border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+      <i class="fa-solid fa-dice text-casino-gold text-2xl"></i>
+      <span class="text-xl font-black tracking-wider bg-gradient-to-r from-purple-400 to-amber-400 bg-clip-text text-transparent">CASANOVA VIP</span>
+    </div>
+    <div id="nav-actions" class="flex items-center space-x-3">
+      <!-- Injetado por JS -->
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container mx-auto px-4 py-8 flex-grow">
+
+    <!-- 1. TELA DE AUTENTICAÇÃO (LOGIN / CADASTRO) -->
+    <div id="view-auth" class="max-w-md mx-auto bg-casino-card p-8 rounded-2xl border border-slate-800 shadow-2xl mt-12">
+      <h2 id="auth-title" class="text-2xl font-bold text-center mb-6 text-purple-400">Aceder à Plataforma</h2>
+      <form onsubmit="handleAuth(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs uppercase font-bold text-slate-400 mb-1">E-mail</label>
+          <input type="email" id="auth-email" required placeholder="seu@email.com" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-purple-500 focus:outline-none text-white">
+        </div>
+        <div>
+          <label class="block text-xs uppercase font-bold text-slate-400 mb-1">Palavra-passe</label>
+          <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-purple-500 focus:outline-none text-white">
+        </div>
+        <button type="submit" id="auth-btn" class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 font-bold rounded-xl shadow-lg hover:opacity-90 transition">Entrar na Conta</button>
+      </form>
+      <div class="mt-6 text-center">
+        <button onclick="toggleMode()" class="text-sm text-purple-400 hover:underline" id="toggle-mode-text">Não tem conta? Cadastre-se</button>
+      </div>
+    </div>
+
+    <!-- 2. PAINEL DE JOGOS DO UTILIZADOR (DASHBOARD) -->
+    <div id="view-dashboard" class="hidden space-y-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-casino-card p-6 rounded-2xl border border-slate-800 gap-4">
+        <div>
+          <h1 class="text-2xl font-black text-white">Bem-vindo ao Lobby</h1>
+          <p class="text-slate-400 text-sm">Escolha um jogo abaixo ou gira os slots para lucrar.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="bg-slate-900 px-4 py-2 rounded-xl border border-slate-700">
+            <span class="text-xs text-slate-400 block">Saldo Disponível</span>
+            <span class="text-lg font-bold text-casino-gold">R$ <span id="user-balance">100.00</span></span>
+          </div>
+          <button onclick="simulateDeposit()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition">+ Depositar</button>
+        </div>
+      </div>
+
+      <!-- Grid de Jogos -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-casino-card border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+          <div class="h-32 bg-purple-950/40 rounded-xl flex items-center justify-center mb-4 border border-purple-500/20">
+            <i class="fa-solid fa-rocket text-4xl text-purple-400 animate-pulse"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Aviator Crash</h3>
+          <p class="text-xs text-slate-400 mb-4">Multiplicador ao vivo em tempo real.</p>
+          <button onclick="playGame('Aviator', 10)" class="w-full py-2.5 bg-casino-gold text-slate-950 font-black rounded-xl hover:bg-amber-400 transition">Jogar (Aposta R$ 10)</button>
+        </div>
+        <div class="bg-casino-card border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+          <div class="h-32 bg-amber-950/40 rounded-xl flex items-center justify-center mb-4 border border-amber-500/20">
+            <i class="fa-solid fa-coins text-4xl text-casino-gold"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Tiger Slots</h3>
+          <p class="text-xs text-slate-400 mb-4">Caça-níquel de alta volatilidade.</p>
+          <button onclick="playGame('Tiger', 5)" class="w-full py-2.5 bg-casino-gold text-slate-950 font-black rounded-xl hover:bg-amber-400 transition">Jogar (Aposta R$ 5)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PAINEL ADMINISTRATIVO (ADMIN DASHBOARD) -->
+    <div id="view-admin" class="hidden space-y-6">
+      <div class="flex justify-between items-center bg-red-950/30 border border-red-500/30 p-6 rounded-2xl">
+        <div>
+          <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase">Painel Restrito</span>
+          <h1 class="text-3xl font-black text-white mt-2">Gestão Administrativa (Casa)</h1>
+          <p class="text-slate-400 text-sm">Controle de ganhos da casa, utilizadores registados e estatísticas de lucro.</p>
+        </div>
+        <button onclick="switchView('dashboard')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-bold">Voltar ao Cassino</button>
+      </div>
+
+      <!-- Métricas da Casa -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
+          <p class="text-slate-400 text-xs uppercase font-bold">Lucro Total da Casa (GGR)</p>
+          <p class="text-3xl font-black text-emerald-400 mt-2">R$ <span id="admin-profit">0.00</span></p>
+        </div>
+        <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
+          <p class="text-slate-400 text-xs uppercase font-bold">Total de Utilizadores</p>
+          <p class="text-3xl font-black text-purple-400 mt-2" id="admin-users-count">1</p>
+        </div>
+        <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
+          <p class="text-slate-400 text-xs uppercase font-bold">Estado do Sistema</p>
+          <p class="text-3xl font-black text-blue-400 mt-2">Online 🟢</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- LÓGICA DA APLICAÇÃO -->
+  <script>
+    let isRegister = false;
+
+    function init() {
+      if (!localStorage.getItem('balance')) localStorage.setItem('balance', '100.00');
+      if (!localStorage.getItem('house_profit')) localStorage.setItem('house_profit', '0.00');
+      renderApp();
+    }
+
+    function toggleMode() {
+      isRegister = !isRegister;
+      document.getElementById('auth-title').innerText = isRegister ? 'Criar Nova Conta' : 'Aceder à Plataforma';
+      document.getElementById('auth-btn').innerText = isRegister ? 'Cadastrar Gratuitamente' : 'Entrar na Conta';
+      document.getElementById('toggle-mode-text').innerText = isRegister ? 'Já tem conta? Faça Login' : 'Não tem conta? Cadastre-se';
+    }
+
+    function handleAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      
+      // Se usar e-mail admin, abre o painel admin
+      if (email === 'admin@casanova.com') {
+        localStorage.setItem('role', 'admin');
+      } else {
+        localStorage.setItem('role', 'user');
+      }
+      localStorage.setItem('logged_user', email);
+      renderApp();
+    }
+
+    function logout() {
+      localStorage.removeItem('logged_user');
+      localStorage.removeItem('role');
+      renderApp();
+    }
+
+    function simulateDeposit() {
+      let b = parseFloat(localStorage.getItem('balance'));
+      b += 50.00;
+      localStorage.setItem('balance', b.toFixed(2));
+      renderApp();
+      alert('Depósito de R$ 50,00 simulado com sucesso!');
+    }
+
+    function playGame(gameName, cost) {
+      let b = parseFloat(localStorage.getItem('balance'));
+      let profit = parseFloat(localStorage.getItem('house_profit'));
+
+      if (b < cost) {
+        alert('Saldo insuficiente! Faça um depósito para continuar.');
+        return;
+      }
+
+      // Lógica simulada: 50% de chance de ganhar ou perder
+      b -= cost;
+      if (Math.random() > 0.5) {
+        let prize = cost * 2;
+        b += prize;
+        alert(`Parabéns! Ganhou R$ ${prize.toFixed(2)} no ${gameName}!`);
+      } else {
+        profit += cost; // A casa lucra a aposta perdida
+        localStorage.setItem('house_profit', profit.toFixed(2));
+        alert(`Não foi desta vez! Tente novamente no ${gameName}.`);
+      }
+
+      localStorage.setItem('balance', b.toFixed(2));
+      renderApp();
+    }
+
+    function switchView(view) {
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById('view-admin').classList.add('hidden');
+      if(view === 'dashboard') document.getElementById('view-dashboard').classList.remove('hidden');
+      if(view === 'admin') document.getElementById('view-admin').classList.remove('hidden');
+    }
+
+    function renderApp() {
+      const user = localStorage.getItem('logged_user');
+      const role = localStorage.getItem('role');
+      const viewAuth = document.getElementById('view-auth');
+      const viewDashboard = document.getElementById('view-dashboard');
+      const viewAdmin = document.getElementById('view-admin');
+      const navActions = document.getElementById('nav-actions');
+
+      if (user) {
+        viewAuth.classList.add('hidden');
+        if (role === 'admin') {
+          viewDashboard.classList.add('hidden');
+          viewAdmin.classList.remove('hidden');
+          document.getElementById('admin-profit').innerText = localStorage.getItem('house_profit');
+        } else {
+          viewAdmin.classList.add('hidden');
+          viewDashboard.classList.remove('hidden');
+          document.getElementById('user-balance').innerText = localStorage.getItem('balance');
+        }
+        navActions.innerHTML = `
+          ${role !== 'admin' ? '<button onclick="switchView(\'admin\')" class="px-3 py-1.5 bg-red-900/40 text-red-400 border border-red-700/50 rounded-xl text-xs font-bold">Painel Admin</button>' : ''}
+          <span class="text-xs text-slate-400 hidden sm:inline"><i class="fa-solid fa-user-circle mr-1"></i>${user}</span>
+          <button onclick="logout()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">Sair</button>
+        `;
+      } else {
+        viewAuth.classList.remove('hidden');
+        viewDashboard.classList.add('hidden');
+        viewAdmin.classList.add('hidden');
+        navActions.innerHTML = `<span class="text-xs text-slate-500">Modo Visitante</span>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+  </html>
+  
