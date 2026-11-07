@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Raspadinha VIP - Plataforma Oficial</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -19,24 +19,23 @@
     }
   </script>
 </head>
-<body class="bg-scratch-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-scratch-purple selection:text-white">
+<body class="bg-scratch-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-scratch-purple selection:text-white">
 
   <!-- TOPO / HEADER -->
-  <header class="bg-scratch-card/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center sticky top-0 z-40">
+  <header class="bg-scratch-card/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center sticky top-0 z-40 w-full">
     <div class="flex items-center space-x-3">
       <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-2 text-xl focus:outline-none md:hidden">
         <i class="fa-solid fa-bars"></i>
       </button>
       <div class="flex items-center space-x-2 cursor-pointer" onclick="switchView('dashboard')">
-        <i class="fa-solid fa-ticket text-scratch-gold text-3xl animate-bounce"></i>
-        <span class="text-xl md:text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent">RASPADINHA VIP</span>
+        <i class="fa-solid fa-ticket text-scratch-gold text-2xl md:text-3xl animate-bounce"></i>
+        <span class="text-lg md:text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent">RASPADINHA VIP</span>
       </div>
     </div>
     
-    <!-- Painel de Saldo e Botões do Topo -->
-    <div class="flex items-center space-x-3">
-      <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center space-x-2">
-        <span class="text-[10px] text-slate-400 uppercase font-bold">R$</span>
+    <div class="flex items-center space-x-2 md:space-x-3">
+      <div class="bg-slate-950 px-2.5 py-1.5 rounded-xl border border-slate-800 flex items-center space-x-1.5">
+        <span class="text-[9px] text-slate-400 uppercase font-bold">R$</span>
         <span id="user-balance" class="font-bold text-scratch-gold text-xs md:text-sm">100.00</span>
       </div>
       <button onclick="openDepositModal()" class="px-3 py-1.5 bg-scratch-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition">+ Depositar</button>
@@ -46,8 +45,11 @@
 
   <div class="flex flex-grow relative">
     
+    <!-- OVERLAY ESCURO PARA O MENU MOBILE -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-20 hidden md:hidden backdrop-blur-xs"></div>
+
     <!-- BARRA LATERAL (SIDEBAR) -->
-    <aside id="sidebar" class="w-64 bg-scratch-card border-r border-slate-800 p-4 absolute md:relative z-30 h-[calc(100vh-65px)] transition-all duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
+    <aside id="sidebar" class="w-64 bg-scratch-card border-r border-slate-800 p-4 fixed md:relative z-30 h-[calc(100vh-65px)] transition-transform duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none top-[65px] md:top-0">
       <div class="space-y-6">
         <div>
           <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 mb-3 px-2">Navegação</p>
@@ -76,10 +78,10 @@
     </aside>
 
     <!-- ÁREA PRINCIPAL -->
-    <main class="flex-grow p-4 md:p-6 space-y-8 overflow-x-hidden">
+    <main class="flex-grow p-4 md:p-6 space-y-8 w-full max-w-7xl mx-auto">
 
-      <!-- 1. TELA DE CADASTRO / LOGIN (SIMULADA E DESBLOQUEADA) -->
-      <div id="view-auth" class="hidden max-w-md mx-auto bg-scratch-card p-8 rounded-3xl border border-slate-800 shadow-2xl mt-4">
+      <!-- 1. TELA DE CADASTRO / LOGIN -->
+      <div id="view-auth" class="hidden max-w-md mx-auto bg-scratch-card p-6 md:p-8 rounded-3xl border border-slate-800 shadow-2xl mt-4">
         <div class="text-center mb-6">
           <i class="fa-solid fa-ticket text-scratch-gold text-4xl mb-2"></i>
           <h2 class="text-2xl font-black text-white">Criar Conta / Login</h2>
@@ -88,20 +90,19 @@
         <form onsubmit="event.preventDefault(); switchView('dashboard');" class="space-y-4">
           <div>
             <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">Seu Nome / Apelido</label>
-            <input type="text" value="Jogador VIP" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm">
+            <input type="text" value="Jogador VIP" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-scratch-purple">
           </div>
           <div>
             <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">E-mail</label>
-            <input type="email" value="jogador@teste.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm">
+            <input type="email" value="jogador@teste.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-scratch-purple">
           </div>
           <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 font-bold rounded-xl shadow-lg hover:opacity-95 transition text-sm">Entrar no Lobby de Jogos</button>
         </form>
       </div>
 
-      <!-- 2. LOBBY DE RASPADINHAS (DASHBOARD PRINCIPAL) -->
+      <!-- 2. LOBBY DE RASPADINHAS -->
       <div id="view-dashboard" class="space-y-8">
         
-        <!-- BANNER DE DESTAQUE -->
         <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900/60 via-slate-900 to-slate-950 border border-purple-500/30 p-6 md:p-8 shadow-2xl">
           <div class="relative z-10 max-w-lg space-y-3">
             <span class="inline-block bg-scratch-gold/20 text-scratch-gold text-[10px] font-black px-3 py-1 rounded-full border border-scratch-gold/30 uppercase tracking-widest">Raspadinhas Online 2026</span>
@@ -113,7 +114,6 @@
           </div>
         </section>
 
-        <!-- GRADE DE RASPADINHAS -->
         <section>
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-black text-white flex items-center"><i class="fa-solid fa-fire text-scratch-gold mr-2"></i>Raspadinhas em Destaque</h2>
@@ -122,7 +122,6 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <!-- Raspadinha 1 -->
             <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
               <div class="h-40 bg-gradient-to-tr from-amber-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-amber-500/20">
                 <i class="fa-solid fa-coins text-5xl text-amber-400 group-hover:scale-110 transition duration-300"></i>
@@ -138,7 +137,6 @@
               </div>
             </div>
 
-            <!-- Raspadinha 2 -->
             <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
               <div class="h-40 bg-gradient-to-tr from-emerald-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-emerald-500/20">
                 <i class="fa-solid fa-money-bill-wave text-5xl text-emerald-400 group-hover:scale-110 transition duration-300"></i>
@@ -154,7 +152,6 @@
               </div>
             </div>
 
-            <!-- Raspadinha 3 -->
             <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
               <div class="h-40 bg-gradient-to-tr from-purple-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-purple-500/20">
                 <i class="fa-solid fa-gem text-5xl text-purple-400 group-hover:scale-110 transition duration-300"></i>
@@ -169,7 +166,6 @@
               </div>
             </div>
 
-            <!-- Raspadinha 4 -->
             <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
               <div class="h-40 bg-gradient-to-tr from-red-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-red-500/20">
                 <i class="fa-solid fa-bolt text-5xl text-red-400 group-hover:scale-110 transition duration-300"></i>
@@ -189,9 +185,9 @@
 
       </div>
 
-      <!-- 3. PAINEL ADMINISTRATIVO (ADMIN DA BANCA) -->
+      <!-- 3. PAINEL ADMINISTRATIVO -->
       <div id="view-admin" class="hidden space-y-6">
-        <div class="flex justify-between items-center bg-red-950/20 border border-red-500/30 p-6 rounded-3xl">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-red-950/20 border border-red-500/30 p-6 rounded-3xl gap-4">
           <div>
             <span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Painel Restrito</span>
             <h1 class="text-2xl font-black text-white mt-2">Gestão das Raspadinhas</h1>
@@ -231,13 +227,12 @@
     </div>
   </div>
 
-  <!-- CHAT ONLINE DE SUPORTE (BALÃO FLUTUANTE) -->
+  <!-- CHAT ONLINE DE SUPORTE -->
   <div class="fixed bottom-5 right-5 z-50">
     <button onclick="toggleChat()" class="w-14 h-14 bg-scratch-purple hover:bg-purple-500 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110">
       <i class="fa-solid fa-headset"></i>
     </button>
     
-    <!-- Janela de Chat de Suporte -->
     <div id="chat-window" class="hidden fixed bottom-24 right-5 w-80 md:w-96 bg-scratch-card border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[400px]">
       <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center">
         <div class="flex items-center space-x-2">
@@ -258,13 +253,16 @@
     </div>
   </div>
 
-  <!-- SCRIPT DE LÓGICA -->
+  <!-- SCRIPT -->
   <script>
     let balance = 100.00;
     let houseProfit = 0.00;
 
     function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('-translate-x-full');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
     }
 
     function toggleChat() {
@@ -295,7 +293,13 @@
       if (view === 'auth') document.getElementById('view-auth').classList.remove('hidden');
       if (view === 'dashboard') document.getElementById('view-dashboard').classList.remove('hidden');
       if (view === 'admin') document.getElementById('view-admin').classList.remove('hidden');
-      if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+      
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (window.innerWidth < 768) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
     }
 
     function openDepositModal() {
@@ -312,31 +316,4 @@
       document.getElementById('user-balance').innerText = balance.toFixed(2);
       closeDepositModal();
       alert(`✅ Depósito PIX de R$ ${val.toFixed(2)} simulado com sucesso!`);
-    }
-
-    function playScratch(gameName, cost) {
-      if (balance < cost) {
-        alert('❌ Saldo insuficiente! Faça um depósito PIX para raspar.');
-        openDepositModal();
-        return;
-      }
-
-      balance -= cost;
-      
-      // Simulação de cálculo de prêmio da raspadinha (conversão controlada da banca)
-      const won = Math.random() > 0.6; // 40% de chance de vitória
-      if (won) {
-        const prize = cost * 3;
-        balance += prize;
-        alert(`🎉 PARABÉNS! Você raspou a [${gameName}] e ganhou R$ ${prize.toFixed(2)} no PIX!`);
-      } else {
-        houseProfit += cost;
-        document.getElementById('admin-profit').innerText = houseProfit.toFixed(2);
-        alert(`❌ Não foi desta vez na [${gameName}]. Tente outro bilhete!`);
-      }
-
-      document.getElementById('user-balance').innerText = balance.toFixed(2);
-    }
-  </script>
-</body>
-</html>
+   
