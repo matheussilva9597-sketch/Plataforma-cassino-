@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casanova VIP - Cassino Oficial 2026</title>
+  <title>Raspadinha VIP - Plataforma Oficial</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <script>
@@ -12,213 +12,175 @@
       theme: {
         extend: {
           colors: {
-            casino: { dark: '#080c14', card: '#101726', hover: '#182237', purple: '#7c3aed', gold: '#fbbf24', emerald: '#10b981' }
+            scratch: { dark: '#090d16', card: '#111827', hover: '#1f293d', purple: '#8b5cf6', gold: '#f59e0b', emerald: '#10b981' }
           }
         }
       }
     }
   </script>
 </head>
-<body class="bg-casino-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-casino-purple selection:text-white">
+<body class="bg-scratch-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-scratch-purple selection:text-white">
 
   <!-- TOPO / HEADER -->
-  <header class="bg-casino-card/95 backdrop-blur-md border-b border-slate-800/80 px-4 py-3 flex justify-between items-center sticky top-0 z-50">
+  <header class="bg-scratch-card/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center sticky top-0 z-40">
     <div class="flex items-center space-x-3">
-      <button onclick="toggleSidebar()" id="menu-toggle-btn" class="hidden text-slate-400 hover:text-white p-2 text-xl focus:outline-none">
+      <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-2 text-xl focus:outline-none md:hidden">
         <i class="fa-solid fa-bars"></i>
       </button>
-      <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-dice-d20 text-casino-gold text-3xl animate-pulse"></i>
-        <span class="text-xl md:text-2xl font-black tracking-wider bg-gradient-to-r from-purple-400 via-pink-500 to-amber-400 bg-clip-text text-transparent">CASANOVA</span>
+      <div class="flex items-center space-x-2 cursor-pointer" onclick="switchView('dashboard')">
+        <i class="fa-solid fa-ticket text-scratch-gold text-3xl animate-bounce"></i>
+        <span class="text-xl md:text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent">RASPADINHA VIP</span>
       </div>
     </div>
     
-    <!-- Ações do Topo (Exibidas apenas após login) -->
-    <div id="nav-actions" class="hidden items-center space-x-3">
+    <!-- Painel de Saldo e Botões do Topo -->
+    <div class="flex items-center space-x-3">
       <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center space-x-2">
         <span class="text-[10px] text-slate-400 uppercase font-bold">R$</span>
-        <span id="user-balance" class="font-bold text-casino-gold text-xs md:text-sm">0.00</span>
+        <span id="user-balance" class="font-bold text-scratch-gold text-xs md:text-sm">100.00</span>
       </div>
-      <button onclick="openDepositModal()" class="px-3 py-1.5 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition">+ Depositar</button>
-      <button onclick="logout()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">Sair</button>
+      <button onclick="openDepositModal()" class="px-3 py-1.5 bg-scratch-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition">+ Depositar</button>
+      <button onclick="switchView('admin')" class="px-2.5 py-1.5 bg-red-900/40 text-red-400 border border-red-700/50 rounded-xl text-xs font-bold">Admin</button>
     </div>
   </header>
 
   <div class="flex flex-grow relative">
     
     <!-- BARRA LATERAL (SIDEBAR) -->
-    <aside id="sidebar" class="w-64 bg-casino-card border-r border-slate-800/80 p-4 absolute md:relative z-40 h-[calc(100vh-65px)] transition-all duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none hidden">
+    <aside id="sidebar" class="w-64 bg-scratch-card border-r border-slate-800 p-4 absolute md:relative z-30 h-[calc(100vh-65px)] transition-all duration-300 transform -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
       <div class="space-y-6">
         <div>
-          <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 mb-3 px-2">Menu Principal</p>
+          <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 mb-3 px-2">Navegação</p>
           <nav class="space-y-1">
-            <button onclick="switchView('dashboard'); filterGames('all');" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-casino-purple/20 text-purple-300 font-semibold text-sm border border-casino-purple/30">
-              <i class="fa-solid fa-house text-casino-purple"></i><span>Lobby Principal</span>
+            <button onclick="switchView('dashboard')" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-scratch-purple/20 text-purple-300 font-semibold text-sm border border-scratch-purple/30">
+              <i class="fa-solid fa-house text-scratch-purple"></i><span>Lobby Raspadinhas</span>
             </button>
-            <button onclick="switchView('dashboard'); filterGames('slots');" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
-              <i class="fa-solid fa-bolt text-amber-400"></i><span>Slots (Caça-Níqueis)</span>
-            </button>
-            <button onclick="switchView('dashboard'); filterGames('crash');" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
-              <i class="fa-solid fa-plane-up text-red-400"></i><span>Crash Games</span>
-            </button>
-            <button onclick="switchView('dashboard'); filterGames('live');" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
-              <i class="fa-solid fa-video text-emerald-400"></i><span>Cassino ao Vivo</span>
+            <button onclick="switchView('auth')" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-scratch-hover hover:text-white text-sm transition">
+              <i class="fa-solid fa-user-plus text-amber-400"></i><span>Simular Cadastro</span>
             </button>
           </nav>
         </div>
 
         <div>
-          <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 mb-3 px-2">Minha Conta</p>
+          <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 mb-3 px-2">Financeiro</p>
           <nav class="space-y-1">
-            <button onclick="openDepositModal()" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
-              <i class="fa-solid fa-wallet text-casino-emerald"></i><span>Depósito PIX</span>
+            <button onclick="openDepositModal()" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-scratch-hover hover:text-white text-sm transition">
+              <i class="fa-solid fa-qrcode text-scratch-emerald"></i><span>Depósito PIX</span>
             </button>
-            <button onclick="openWithdrawModal()" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-casino-hover hover:text-white text-sm transition">
-              <i class="fa-solid fa-money-bill-transfer text-blue-400"></i><span>Saque PIX</span>
-            </button>
-            <button id="admin-menu-btn" onclick="switchView('admin')" class="hidden w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-950/40 text-sm transition border border-red-900/30">
-              <i class="fa-solid fa-shield-halved text-red-500"></i><span>Painel Admin</span>
+            <button onclick="alert('Módulo de Saque PIX simulado!')" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-scratch-hover hover:text-white text-sm transition">
+              <i class="fa-solid fa-money-bill-transfer text-blue-400"></i><span>Sacar Prêmios</span>
             </button>
           </nav>
         </div>
       </div>
     </aside>
 
-    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- ÁREA PRINCIPAL -->
     <main class="flex-grow p-4 md:p-6 space-y-8 overflow-x-hidden">
 
-      <!-- 1. TELA DE AUTENTICAÇÃO (LOGIN / CADASTRO) -->
-      <div id="view-auth" class="max-w-md mx-auto bg-casino-card p-8 rounded-3xl border border-slate-800 shadow-2xl mt-10">
+      <!-- 1. TELA DE CADASTRO / LOGIN (SIMULADA E DESBLOQUEADA) -->
+      <div id="view-auth" class="hidden max-w-md mx-auto bg-scratch-card p-8 rounded-3xl border border-slate-800 shadow-2xl mt-4">
         <div class="text-center mb-6">
-          <i class="fa-solid fa-dice-d20 text-casino-gold text-4xl mb-2"></i>
-          <h2 id="auth-title" class="text-2xl font-black text-white">Aceder à Plataforma</h2>
-          <p class="text-xs text-slate-400 mt-1">Entre na sua conta para jogar e lucrar.</p>
+          <i class="fa-solid fa-ticket text-scratch-gold text-4xl mb-2"></i>
+          <h2 class="text-2xl font-black text-white">Criar Conta / Login</h2>
+          <p class="text-xs text-slate-400 mt-1">Modo de teste liberado: clique abaixo para entrar direto.</p>
         </div>
-        <form onsubmit="handleAuth(event)" class="space-y-4">
+        <form onsubmit="event.preventDefault(); switchView('dashboard');" class="space-y-4">
+          <div>
+            <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">Seu Nome / Apelido</label>
+            <input type="text" value="Jogador VIP" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm">
+          </div>
           <div>
             <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">E-mail</label>
-            <input type="email" id="auth-email" required placeholder="seu@email.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:border-casino-purple focus:outline-none text-white text-sm">
+            <input type="email" value="jogador@teste.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm">
           </div>
-          <div>
-            <label class="block text-[10px] uppercase font-black text-slate-400 mb-1">Palavra-passe</label>
-            <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:border-casino-purple focus:outline-none text-white text-sm">
-          </div>
-          <button type="submit" id="auth-btn" class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 font-bold rounded-xl shadow-lg shadow-purple-600/30 hover:opacity-95 transition text-sm">Entrar na Conta</button>
+          <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 font-bold rounded-xl shadow-lg hover:opacity-95 transition text-sm">Entrar no Lobby de Jogos</button>
         </form>
-        <div class="mt-6 text-center">
-          <button onclick="toggleMode()" class="text-xs text-casino-purple font-bold hover:underline" id="toggle-mode-text">Não tem conta? Cadastre-se</button>
-        </div>
-        <div class="mt-4 pt-4 border-t border-slate-800 text-center">
-          <p class="text-[10px] text-slate-500">Dica Admin: use <span class="text-amber-400 font-bold">admin@casanova.com</span> para aceder à Gestão.</p>
-        </div>
       </div>
 
-      <!-- 2. LOBBY PRINCIPAL DE JOGOS (DASHBOARD) -->
-      <div id="view-dashboard" class="hidden space-y-8">
+      <!-- 2. LOBBY DE RASPADINHAS (DASHBOARD PRINCIPAL) -->
+      <div id="view-dashboard" class="space-y-8">
         
-        <!-- CARROSSEL / BANNER DE BOAS-VINDAS -->
+        <!-- BANNER DE DESTAQUE -->
         <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900/60 via-slate-900 to-slate-950 border border-purple-500/30 p-6 md:p-8 shadow-2xl">
           <div class="relative z-10 max-w-lg space-y-3">
-            <span class="inline-block bg-casino-gold/20 text-casino-gold text-[10px] font-black px-3 py-1 rounded-full border border-casino-gold/30 uppercase tracking-widest">Bônus Exclusivo 2026</span>
-            <h1 class="text-2xl md:text-4xl font-black text-white leading-tight">Receba até <span class="text-casino-gold">R$ 1.000 + 50 GIROS</span></h1>
-            <p class="text-slate-300 text-xs md:text-sm">Faça o seu primeiro depósito PIX instantâneo e dobre o seu saldo.</p>
-            <button onclick="openDepositModal()" class="px-5 py-2.5 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl shadow-lg shadow-emerald-500/20 text-sm transition transform hover:scale-105">
-              <i class="fa-solid fa-bolt mr-2"></i>Depositar via PIX
+            <span class="inline-block bg-scratch-gold/20 text-scratch-gold text-[10px] font-black px-3 py-1 rounded-full border border-scratch-gold/30 uppercase tracking-widest">Raspadinhas Online 2026</span>
+            <h1 class="text-2xl md:text-4xl font-black text-white leading-tight">Raspe e Ganhe até <span class="text-scratch-gold">R$ 50.000 no PIX</span></h1>
+            <p class="text-slate-300 text-xs md:text-sm">Compre bilhetes a partir de R$ 2,00 e receba o prêmio na hora no seu saldo.</p>
+            <button onclick="openDepositModal()" class="px-5 py-2.5 bg-scratch-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl shadow-lg text-sm transition">
+              <i class="fa-solid fa-bolt mr-2"></i>Comprar Créditos via PIX
             </button>
           </div>
-          <i class="fa-solid fa-trophy absolute right-4 -bottom-6 text-9xl text-purple-500/10 pointer-events-none"></i>
         </section>
 
-        <!-- FILTROS DE CATEGORIAS -->
-        <section class="flex space-x-2 overflow-x-auto pb-2 scrollbar-none">
-          <button onclick="filterGames('all')" class="px-4 py-2 bg-casino-purple text-white font-bold rounded-xl text-xs shrink-0 flex items-center space-x-2">
-            <i class="fa-solid fa-fire"></i><span>Todos os Jogos</span>
-          </button>
-          <button onclick="filterGames('crash')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0 flex items-center space-x-2">
-            <i class="fa-solid fa-plane-up text-red-400"></i><span>Crash Games</span>
-          </button>
-          <button onclick="filterGames('slots')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0 flex items-center space-x-2">
-            <i class="fa-solid fa-bolt text-amber-400"></i><span>Slots (Caça-Níqueis)</span>
-          </button>
-          <button onclick="filterGames('live')" class="px-4 py-2 bg-casino-card hover:bg-casino-hover text-slate-300 font-semibold rounded-xl text-xs shrink-0 flex items-center space-x-2">
-            <i class="fa-solid fa-dharmachakra text-emerald-400"></i><span>Roleta & Mesas</span>
-          </button>
-        </section>
-
-        <!-- GRADE DE JOGOS -->
+        <!-- GRADE DE RASPADINHAS -->
         <section>
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-black text-white flex items-center"><i class="fa-solid fa-star text-casino-gold mr-2"></i>Jogos em Alta</h2>
-            <span class="text-xs text-slate-500">Provedores Certificados</span>
+            <h2 class="text-lg font-black text-white flex items-center"><i class="fa-solid fa-fire text-scratch-gold mr-2"></i>Raspadinhas em Destaque</h2>
+            <span class="text-xs text-slate-500">Prêmios Instantâneos</span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <div class="game-card crash bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
-              <div class="h-32 bg-gradient-to-tr from-red-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
-                <i class="fa-solid fa-plane-up text-3xl text-red-500 group-hover:scale-110 transition"></i>
-                <span class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded">AO VIVO</span>
+            <!-- Raspadinha 1 -->
+            <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
+              <div class="h-40 bg-gradient-to-tr from-amber-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-amber-500/20">
+                <i class="fa-solid fa-coins text-5xl text-amber-400 group-hover:scale-110 transition duration-300"></i>
+                <span class="absolute top-3 right-3 bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full">POPULAR</span>
               </div>
-              <div class="p-3">
-                <h3 class="font-bold text-xs text-white truncate">Aviator Crash</h3>
-                <p class="text-[10px] text-slate-500 mb-2">Spribe</p>
-                <button onclick="playGame('Aviator', 10)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 10)</button>
-              </div>
-            </div>
-
-            <div class="game-card slots bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
-              <div class="h-32 bg-gradient-to-tr from-amber-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
-                <i class="fa-solid fa-coins text-3xl text-amber-400 group-hover:scale-110 transition"></i>
-                <span class="absolute top-2 right-2 bg-amber-500 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded">HOT</span>
-              </div>
-              <div class="p-3">
-                <h3 class="font-bold text-xs text-white truncate">Fortune Tiger</h3>
-                <p class="text-[10px] text-slate-500 mb-2">PG Soft</p>
-                <button onclick="playGame('Fortune Tiger', 5)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 5)</button>
+              <div class="mt-4 space-y-2">
+                <h3 class="font-black text-base text-white">Raspadinha do Tigre</h3>
+                <p class="text-xs text-slate-400">Prêmio Máximo: <span class="text-scratch-gold font-bold">R$ 5.000</span></p>
+                <div class="flex justify-between items-center pt-2">
+                  <span class="text-xs text-slate-500 font-bold">R$ 2,00 / bilhete</span>
+                  <button onclick="playScratch('Raspadinha do Tigre', 2)" class="px-4 py-2 bg-scratch-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Raspar Agora</button>
+                </div>
               </div>
             </div>
 
-            <div class="game-card live bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
-              <div class="h-32 bg-gradient-to-tr from-emerald-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
-                <i class="fa-solid fa-dharmachakra text-3xl text-emerald-400 group-hover:scale-110 transition"></i>
+            <!-- Raspadinha 2 -->
+            <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
+              <div class="h-40 bg-gradient-to-tr from-emerald-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-emerald-500/20">
+                <i class="fa-solid fa-money-bill-wave text-5xl text-emerald-400 group-hover:scale-110 transition duration-300"></i>
+                <span class="absolute top-3 right-3 bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full">PIX RÁPIDO</span>
               </div>
-              <div class="p-3">
-                <h3 class="font-bold text-xs text-white truncate">Roleta Brasileira</h3>
-                <p class="text-[10px] text-slate-500 mb-2">Evolution</p>
-                <button onclick="playGame('Roleta Brasileira', 10)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 10)</button>
-              </div>
-            </div>
-
-            <div class="game-card crash bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
-              <div class="h-32 bg-gradient-to-tr from-blue-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
-                <i class="fa-solid fa-bomb text-3xl text-blue-400 group-hover:scale-110 transition"></i>
-              </div>
-              <div class="p-3">
-                <h3 class="font-bold text-xs text-white truncate">Mines Field</h3>
-                <p class="text-[10px] text-slate-500 mb-2">Spribe</p>
-                <button onclick="playGame('Mines Field', 5)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 5)</button>
+              <div class="mt-4 space-y-2">
+                <h3 class="font-black text-base text-white">Raspadinha do Milhão</h3>
+                <p class="text-xs text-slate-400">Prêmio Máximo: <span class="text-scratch-emerald font-bold">R$ 50.000</span></p>
+                <div class="flex justify-between items-center pt-2">
+                  <span class="text-xs text-slate-500 font-bold">R$ 10,00 / bilhete</span>
+                  <button onclick="playScratch('Raspadinha do Milhão', 10)" class="px-4 py-2 bg-scratch-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Raspar Agora</button>
+                </div>
               </div>
             </div>
 
-            <div class="game-card slots bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
-              <div class="h-32 bg-gradient-to-tr from-purple-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
-                <i class="fa-solid fa-gem text-3xl text-purple-400 group-hover:scale-110 transition"></i>
+            <!-- Raspadinha 3 -->
+            <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
+              <div class="h-40 bg-gradient-to-tr from-purple-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-purple-500/20">
+                <i class="fa-solid fa-gem text-5xl text-purple-400 group-hover:scale-110 transition duration-300"></i>
               </div>
-              <div class="p-3">
-                <h3 class="font-bold text-xs text-white truncate">Fortune Ox</h3>
-                <p class="text-[10px] text-slate-500 mb-2">PG Soft</p>
-                <button onclick="playGame('Fortune Ox', 5)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 5)</button>
+              <div class="mt-4 space-y-2">
+                <h3 class="font-black text-base text-white">Diamante da Sorte</h3>
+                <p class="text-xs text-slate-400">Prêmio Máximo: <span class="text-purple-400 font-bold">R$ 15.000</span></p>
+                <div class="flex justify-between items-center pt-2">
+                  <span class="text-xs text-slate-500 font-bold">R$ 5,00 / bilhete</span>
+                  <button onclick="playScratch('Diamante da Sorte', 5)" class="px-4 py-2 bg-scratch-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Raspar Agora</button>
+                </div>
               </div>
             </div>
 
-            <div class="game-card live bg-casino-card border border-slate-800 hover:border-purple-500/60 rounded-2xl overflow-hidden shadow-lg transition duration-300 group flex flex-col justify-between">
-              <div class="h-32 bg-gradient-to-tr from-rose-950 via-slate-900 to-slate-950 flex flex-col items-center justify-center relative p-3">
-                <i class="fa-solid fa-spade text-3xl text-rose-400 group-hover:scale-110 transition"></i>
+            <!-- Raspadinha 4 -->
+            <div class="bg-scratch-card border border-slate-800 hover:border-purple-500/60 rounded-3xl p-5 shadow-xl transition group flex flex-col justify-between">
+              <div class="h-40 bg-gradient-to-tr from-red-950 via-slate-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center relative p-4 text-center border border-red-500/20">
+                <i class="fa-solid fa-bolt text-5xl text-red-400 group-hover:scale-110 transition duration-300"></i>
               </div>
-              <div class="p-3">
-                <h3 class="font-bold text-xs text-white truncate">Blackjack VIP</h3>
-                <p class="text-[10px] text-slate-500 mb-2">Pragmatic</p>
-                <button onclick="playGame('Blackjack VIP', 20)" class="w-full py-2 bg-casino-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Jogar (R$ 20)</button>
+              <div class="mt-4 space-y-2">
+                <h3 class="font-bold text-base text-white">Pix Turbo 24h</h3>
+                <p class="text-xs text-slate-400">Prêmio Máximo: <span class="text-red-400 font-bold">R$ 1.000</span></p>
+                <div class="flex justify-between items-center pt-2">
+                  <span class="text-xs text-slate-500 font-bold">R$ 1,00 / bilhete</span>
+                  <button onclick="playScratch('Pix Turbo 24h', 1)" class="px-4 py-2 bg-scratch-gold hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition">Raspar Agora</button>
+                </div>
               </div>
             </div>
 
@@ -227,29 +189,29 @@
 
       </div>
 
-      <!-- 3. PAINEL ADMINISTRATIVO -->
+      <!-- 3. PAINEL ADMINISTRATIVO (ADMIN DA BANCA) -->
       <div id="view-admin" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-red-950/20 border border-red-500/30 p-6 rounded-2xl gap-4">
+        <div class="flex justify-between items-center bg-red-950/20 border border-red-500/30 p-6 rounded-3xl">
           <div>
-            <span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">Painel Restrito</span>
-            <h1 class="text-2xl font-black text-white mt-2">Gestão Geral da Casa</h1>
-            <p class="text-xs text-slate-400">Controle total de lucros (GGR) e utilizadores.</p>
+            <span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Painel Restrito</span>
+            <h1 class="text-2xl font-black text-white mt-2">Gestão das Raspadinhas</h1>
+            <p class="text-xs text-slate-400">Controle de lucro acumulado e retenção de prêmios da casa.</p>
           </div>
-          <button onclick="switchView('dashboard')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition">Voltar ao Cassino</button>
+          <button onclick="switchView('dashboard')" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold">Voltar</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Lucro Líquido da Casa (GGR)</p>
-            <p class="text-3xl font-black text-casino-emerald mt-2">R$ <span id="admin-profit">0.00</span></p>
+          <div class="bg-scratch-card p-6 rounded-3xl border border-slate-800">
+            <p class="text-slate-400 text-[10px] font-bold uppercase">Lucro da Casa (Banca)</p>
+            <p class="text-3xl font-black text-scratch-emerald mt-2">R$ <span id="admin-profit">0.00</span></p>
           </div>
-          <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Utilizador Ativo</p>
-            <p class="text-lg font-bold text-purple-400 mt-2 truncate" id="admin-active-user">-</p>
+          <div class="bg-scratch-card p-6 rounded-3xl border border-slate-800">
+            <p class="text-slate-400 text-[10px] font-bold uppercase">Taxa de Conversão (RTP)</p>
+            <p class="text-3xl font-black text-scratch-gold mt-2">70% Retorno</p>
           </div>
-          <div class="bg-casino-card p-6 rounded-2xl border border-slate-800">
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Estado do Servidor</p>
-            <p class="text-3xl font-black text-blue-400 mt-2">Online 🟢</p>
+          <div class="bg-scratch-card p-6 rounded-3xl border border-slate-800">
+            <p class="text-slate-400 text-[10px] font-bold uppercase">Sistema de Raspadinhas</p>
+            <p class="text-3xl font-black text-blue-400 mt-2">Ativo ⚡</p>
           </div>
         </div>
       </div>
@@ -257,35 +219,124 @@
     </main>
   </div>
 
-  <!-- MODAL DE DEPÓSITO PIX SIMULADO -->
+  <!-- MODAL DE DEPÓSITO PIX -->
   <div id="deposit-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-casino-card border border-slate-800 p-6 rounded-3xl max-w-sm w-full space-y-4 shadow-2xl">
+    <div class="bg-scratch-card border border-slate-800 p-6 rounded-3xl max-w-sm w-full space-y-4 shadow-2xl">
       <div class="flex justify-between items-center">
-        <h3 class="font-black text-lg text-white"><i class="fa-solid fa-qrcode text-casino-emerald mr-2"></i>Depósito PIX Instantâneo</h3>
-        <button onclick="closeDepositModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <h3 class="font-black text-lg text-white"><i class="fa-solid fa-qrcode text-scratch-emerald mr-2"></i>Depósito PIX</h3>
+        <button onclick="closeDepositModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <p class="text-xs text-slate-400">Insira o valor que deseja simular de depósito na sua carteira:</p>
-      <input type="number" id="deposit-amount" value="50" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-bold text-center text-lg focus:outline-none focus:border-casino-emerald">
-      <button onclick="confirmDeposit()" class="w-full py-3 bg-casino-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-sm transition">Gerar QR Code PIX</button>
+      <input type="number" id="deposit-amount" value="20" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-bold text-center text-lg focus:outline-none">
+      <button onclick="confirmDeposit()" class="w-full py-3 bg-scratch-emerald hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-sm transition">Simular Gerar PIX</button>
     </div>
   </div>
 
-  <!-- SCRIPT DE CONTROLE -->
-  <script>
-    let isRegister = false;
+  <!-- CHAT ONLINE DE SUPORTE (BALÃO FLUTUANTE) -->
+  <div class="fixed bottom-5 right-5 z-50">
+    <button onclick="toggleChat()" class="w-14 h-14 bg-scratch-purple hover:bg-purple-500 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110">
+      <i class="fa-solid fa-headset"></i>
+    </button>
+    
+    <!-- Janela de Chat de Suporte -->
+    <div id="chat-window" class="hidden fixed bottom-24 right-5 w-80 md:w-96 bg-scratch-card border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[400px]">
+      <div class="bg-slate-900 p-4 border-b border-slate-800 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <span class="w-3 h-3 bg-emerald-500 rounded-full animate-ping"></span>
+          <span class="font-bold text-sm text-white">Suporte VIP Online</span>
+        </div>
+        <button onclick="toggleChat()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="chat-messages" class="flex-grow p-4 space-y-3 overflow-y-auto text-xs">
+        <div class="bg-slate-900 p-3 rounded-2xl max-w-[80%] border border-slate-800 text-slate-300">
+          Olá! Bem-vindo ao Suporte da Raspadinha VIP. Como posso ajudar com os seus depósitos ou prêmios?
+        </div>
+      </div>
+      <form onsubmit="sendChatMessage(event)" class="p-3 bg-slate-900 border-t border-slate-800 flex gap-2">
+        <input type="text" id="chat-input" placeholder="Digite sua dúvida..." class="flex-grow px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none">
+        <button type="submit" class="px-3 py-2 bg-scratch-purple text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
 
-    function init() {
-      if (!localStorage.getItem('balance')) localStorage.setItem('balance', '100.00');
-      if (!localStorage.getItem('house_profit')) localStorage.setItem('house_profit', '0.00');
-      renderApp();
-    }
+  <!-- SCRIPT DE LÓGICA -->
+  <script>
+    let balance = 100.00;
+    let houseProfit = 0.00;
 
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('-translate-x-full');
+      document.getElementById('sidebar').classList.toggle('-translate-x-full');
     }
 
-    function toggleMode() {
-      isRegister = !isRegister;
-      document.getElementById('auth-title').innerText = isRegister ? 'Criar Nova Conta' : 'Aceder à Plataforma';
-      document.getElementById('auth-btn').in
+    function toggleChat() {
+      document.getElementById('chat-window').classList.toggle('hidden');
+    }
+
+    function sendChatMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const msgs = document.getElementById('chat-messages');
+      msgs.innerHTML += `<div class="bg-scratch-purple/20 border border-scratch-purple/30 p-3 rounded-2xl max-w-[80%] ml-auto text-purple-200">${text}</div>`;
+      input.value = '';
+
+      setTimeout(() => {
+        msgs.innerHTML += `<div class="bg-slate-900 p-3 rounded-2xl max-w-[80%] border border-slate-800 text-slate-300">Atendente: Entendido! O seu atendimento foi registrado na fila VIP.</div>`;
+        msgs.scrollTop = msgs.scrollHeight;
+      }, 1000);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function switchView(view) {
+      document.getElementById('view-auth').classList.add('hidden');
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById('view-admin').classList.add('hidden');
+      if (view === 'auth') document.getElementById('view-auth').classList.remove('hidden');
+      if (view === 'dashboard') document.getElementById('view-dashboard').classList.remove('hidden');
+      if (view === 'admin') document.getElementById('view-admin').classList.remove('hidden');
+      if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+    }
+
+    function openDepositModal() {
+      document.getElementById('deposit-modal').classList.remove('hidden');
+    }
+
+    function closeDepositModal() {
+      document.getElementById('deposit-modal').classList.add('hidden');
+    }
+
+    function confirmDeposit() {
+      const val = parseFloat(document.getElementById('deposit-amount').value) || 0;
+      balance += val;
+      document.getElementById('user-balance').innerText = balance.toFixed(2);
+      closeDepositModal();
+      alert(`✅ Depósito PIX de R$ ${val.toFixed(2)} simulado com sucesso!`);
+    }
+
+    function playScratch(gameName, cost) {
+      if (balance < cost) {
+        alert('❌ Saldo insuficiente! Faça um depósito PIX para raspar.');
+        openDepositModal();
+        return;
+      }
+
+      balance -= cost;
+      
+      // Simulação de cálculo de prêmio da raspadinha (conversão controlada da banca)
+      const won = Math.random() > 0.6; // 40% de chance de vitória
+      if (won) {
+        const prize = cost * 3;
+        balance += prize;
+        alert(`🎉 PARABÉNS! Você raspou a [${gameName}] e ganhou R$ ${prize.toFixed(2)} no PIX!`);
+      } else {
+        houseProfit += cost;
+        document.getElementById('admin-profit').innerText = houseProfit.toFixed(2);
+        alert(`❌ Não foi desta vez na [${gameName}]. Tente outro bilhete!`);
+      }
+
+      document.getElementById('user-balance').innerText = balance.toFixed(2);
+    }
+  </script>
+</body>
+</html>
